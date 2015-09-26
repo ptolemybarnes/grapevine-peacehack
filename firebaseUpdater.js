@@ -1,19 +1,10 @@
-var geocoder = (function() { 
-  var geocoderProvider = 'google';
-  var httpAdapter = 'https';
-  var extra = {
-      apiKey: process.env.gmaps_key, 
-      formatter: null        
-  };
-   
-  return require('node-geocoder')(geocoderProvider, httpAdapter, extra);
-})();
 
 require('dotenv').load();
 var R        = require("ramda");
 
 var FirebaseClient = require('firebase');
 var Twitter = require("twitter");
+var TweetHandler = require("./tweethandler.js");
 var client  = new Twitter({
   consumer_key: process.env.consumer_key,
   consumer_secret: process.env.consumer_secret,
@@ -22,11 +13,15 @@ var client  = new Twitter({
 });
 
 var Firebase = new FirebaseClient(process.env.firebase_url).child("tweets");
+var sendThingsToFirebase = R.curry(tweetHandler.toFirebase)(Firebase);
+
 
 client.stream('statuses/filter', { track: "#grapevinesyria" }, function(stream) { 
 
   stream.on('data', function(tweet) {
-    createTweetEntry(tweet, tweetHandler);
+    TweetHandler.build(tweet, function(tweetData) {
+      TweetHandler.toFirebase(Firebase, tweetData)
+    });
   });
 
   stream.on('error', function(error) {
@@ -35,27 +30,4 @@ client.stream('statuses/filter', { track: "#grapevinesyria" }, function(stream) 
   });
 });
 
-function createTweetEntry(tweet, callback) {
-  geocoder.geocode(tweet.text).then(function(data) {
-    var output = {
-      date:      tweet.created_at,
-      intensity: "",
-      lat:       data[0].latitude,
-      long:      data[0].longitude,
-      rating:    "",
-      text:      tweet.text,
-      url:       buildUrlFromTweet(tweet)
-    }
-    callback(output)
-  })
-}
-
-function buildUrlFromTweet(tweet) {
-  return "https://twitter.com/" + tweet.user.screen_name + "/status/" + tweet.id_str;
-}
-
-function tweetHandler(tweet) {
-  console.log(tweet);
-  Firebase.push(tweet)
-}
 
