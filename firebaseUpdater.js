@@ -23,13 +23,15 @@ var client  = new Twitter({
 
 var Firebase = new FirebaseClient(process.env.firebase_url).child("tweets");
 
-client.stream('statuses/filter', { track: "#grapevine-syria-test" }, function(stream) { 
+client.stream('statuses/filter', { track: "#grapevinesyria" }, function(stream) { 
+
   stream.on('data', function(tweet) {
-    createTweetEntry(tweet, tweetHandler)
+    createTweetEntry(tweet, tweetHandler);
   });
 
   stream.on('error', function(error) {
-    throw error;
+    console.log("ERROR");
+    console.log(error);
   });
 });
 
@@ -45,7 +47,7 @@ function createTweetEntry(tweet, callback) {
       url:       buildUrlFromTweet(tweet)
     }
     callback(output)
-  });
+  })
 }
 
 function buildUrlFromTweet(tweet) {
@@ -53,6 +55,7 @@ function buildUrlFromTweet(tweet) {
 }
 
 function tweetHandler(tweet) {
+  console.log(tweet);
   Firebase.push(tweet)
 }
 
