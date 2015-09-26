@@ -8,7 +8,7 @@ var Firebase = new FirebaseClient(process.env.firebase_url).child("tweets");
 var tweet = { created_at: 'Sat Sep 26 19:04:56 +0000 2015',
   id: 647849352225030100,
   id_str: '647849352225030145',
-  text: "#grapevine-syria-test This is a test! Trouble in Finsbury Square, London",
+  text: "#grapevine-syria-test This is a test! Trouble near Finsbury Square, London",
   source: '<a href="http://twitter.com" rel="nofollow">Twitter Web Client</a>',
   truncated: false,
   in_reply_to_status_id: null,
