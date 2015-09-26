@@ -29,7 +29,8 @@ module.exports = (function() {
         lat:       data[0].latitude,
         lng:       data[0].longitude,
         text:      tweet.text,
-        url:       buildUrlFromTweet(tweet)
+        url:       buildUrlFromTweet(tweet),
+        name:      tweet.user.screen_name
       }
       callback(output)
     });
