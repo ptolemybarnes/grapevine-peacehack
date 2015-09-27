@@ -76,6 +76,7 @@ var tweet = { created_at: 'Sat Sep 26 19:04:56 +0000 2015',
 
 var TweetHandler = require("./tweetHandler.js"); 
 TweetHandler.build(tweet, function(tweetData) {
+  console.log(tweetData);
   TweetHandler.toFirebase(Firebase, tweetData)
 });
 

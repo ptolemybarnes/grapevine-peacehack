@@ -10,29 +10,31 @@ module.exports = (function() {
     return require('node-geocoder')(geocoderProvider, httpAdapter, extra);
   })();
 
+  var Alchemy = require('./alchemyWrapper');
+
   function buildUrlFromTweet(tweet) {
     return "https://twitter.com/" + tweet.user.screen_name + "/status/" + tweet.id_str;
   }
 
   function toFirebase(Firebase, tweetData) {
-    console.log(tweetData);
     Firebase.push(tweetData);
   }
 
   function build(tweet, callback) { 
     geocoder.geocode(tweet.text).then(function(data) {
-      console.log(data[0]);
-      var output = {
-        date:      tweet.created_at,
-        intensity: "",
-        rating:    "",
-        lat:       data[0].latitude,
-        lng:       data[0].longitude,
-        text:      tweet.text,
-        url:       buildUrlFromTweet(tweet),
-        name:      tweet.user.screen_name
-      }
-      callback(output)
+      Alchemy.call(tweet.text, function(sentimentScore) { 
+        var output = {
+          date:      tweet.created_at,
+          intensity: 1,
+          rating:    sentimentScore,
+          lat:       data[0].latitude,
+          lng:       data[0].longitude,
+          text:      tweet.text,
+          url:       buildUrlFromTweet(tweet),
+          name:      tweet.user.screen_name
+        }
+        callback(output)
+      });
     });
   }
   

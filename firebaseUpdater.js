@@ -1,4 +1,3 @@
-
 require('dotenv').load();
 var R        = require("ramda");
 
@@ -29,5 +28,3 @@ client.stream('statuses/filter', { track: "#grapevinesyria" }, function(stream) 
     console.log(error);
   });
 });
-
-
