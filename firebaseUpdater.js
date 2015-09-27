@@ -1,5 +1,3 @@
-require('dotenv').load();
-
 var FirebaseClient = require('firebase');
 var Twitter = require("twitter");
 var TweetHandler = require("./tweethandler.js");
