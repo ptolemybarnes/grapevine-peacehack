@@ -1,1 +1,1 @@
-http-server -p $PORT
+http-server -p process.env.port
