@@ -1,6 +1,6 @@
 var FirebaseClient = require('firebase');
-var Twitter = require("twitter");
-var TweetHandler = require("./tweethandler.js");
+var Twitter        = require("twitter");
+var TweetHandler   = require("./tweetHandler.js");
 
 var client  = new Twitter({
   consumer_key: process.env.consumer_key,
