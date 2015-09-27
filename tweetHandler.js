@@ -26,9 +26,9 @@ module.exports = (function() {
   }
 
   function build(tweet, callback) { 
-    geocoder.geocode(tweet.text).then(function(data) {
-      Alchemy.call(tweet.text, function(sentimentScore) { 
-        tweet.text = removeHashtag(tweet.text);
+    var text = removeHashtag(tweet.text);
+    geocoder.geocode(text).then(function(data) {
+      Alchemy.call(text, function(sentimentScore) { 
         if (!data[0]) { return }
         var output = {
           date:      tweet.created_at,
