@@ -28,8 +28,11 @@ module.exports = (function() {
   function build(tweet, callback) { 
     var text = removeHashtag(tweet.text);
     geocoder.geocode(text).then(function(data) {
+      console.log("This the processed tweet: " + text);
       Alchemy.call(text, function(sentimentScore) { 
-        if (!data[0]) { return }
+        console.log(data);
+        console.log("Sentiment score: " + sentimentScore);
+        if (!data[0]) { console.log("Data rejected, no location"); return }
         var output = {
           date:      tweet.created_at,
           intensity: 1,
