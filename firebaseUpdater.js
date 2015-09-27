@@ -1,9 +1,9 @@
 require('dotenv').load();
-var R        = require("ramda");
 
 var FirebaseClient = require('firebase');
 var Twitter = require("twitter");
 var TweetHandler = require("./tweethandler.js");
+
 var client  = new Twitter({
   consumer_key: process.env.consumer_key,
   consumer_secret: process.env.consumer_secret,
@@ -12,8 +12,6 @@ var client  = new Twitter({
 });
 
 var Firebase = new FirebaseClient(process.env.firebase_url).child("tweets");
-var sendThingsToFirebase = R.curry(tweetHandler.toFirebase)(Firebase);
-
 
 client.stream('statuses/filter', { track: "#grapevinesyria" }, function(stream) { 
 
@@ -27,4 +25,5 @@ client.stream('statuses/filter', { track: "#grapevinesyria" }, function(stream) 
     console.log("ERROR");
     console.log(error);
   });
+
 });

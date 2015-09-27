@@ -19,14 +19,21 @@ module.exports = (function() {
   function toFirebase(Firebase, tweetData) {
     Firebase.push(tweetData);
   }
+  
+  function removeHashtag(tweetText) {
+    var regexp = new RegExp('#([^\\s]*)','g');
+    return tweetText.replace(regexp, '');
+  }
 
   function build(tweet, callback) { 
     geocoder.geocode(tweet.text).then(function(data) {
       Alchemy.call(tweet.text, function(sentimentScore) { 
+        tweet.text = removeHashtag(tweet.text);
+        if (!data[0]) { return }
         var output = {
           date:      tweet.created_at,
           intensity: 1,
-          rating:    sentimentScore,
+          rating:    (sentimentScore || 0),
           lat:       data[0].latitude,
           lng:       data[0].longitude,
           text:      tweet.text,
