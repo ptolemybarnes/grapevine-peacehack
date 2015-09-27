@@ -4,7 +4,10 @@ module.exports = (function() {
 
   function call(text, callback) { 
     alchemy.sentiment(text, {}, function(err, response) {
+      console.log("Response from Alchemy: ");
+      console.log(response);
       if (err) { throw err }
+      response.docSentiment = (response.docSentiment || { score: 0 });
       callback(response.docSentiment.score)
     });
   };
