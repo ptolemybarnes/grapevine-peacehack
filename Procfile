@@ -1,1 +1,1 @@
-web: node firebaseUpdater.js
+worker: node firebaseUpdater.js
